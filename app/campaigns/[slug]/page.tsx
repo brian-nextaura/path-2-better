@@ -1,0 +1,173 @@
+import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import { getCampaignBySlug } from '@/lib/sanity/queries';
+import { urlForImage } from '@/lib/sanity/client';
+import { ProgressBar } from '@/components/ui/ProgressBar';
+import { DonationSidebar } from '@/components/campaigns/DonationSidebar';
+import Markdown from 'react-markdown';
+
+export const revalidate = 60;
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const campaign = await getCampaignBySlug(slug);
+
+  if (!campaign) {
+    return {
+      title: 'Campaign Not Found - Path2Better',
+    };
+  }
+
+  return {
+    title: `Support ${campaign.firstName} - Path2Better`,
+    description: campaign.story.substring(0, 155),
+    openGraph: {
+      title: `Support ${campaign.firstName}'s Journey to Better`,
+      description: campaign.story.substring(0, 155),
+      images: campaign.profileImage
+        ? [urlForImage(campaign.profileImage).width(1200).height(630).url()]
+        : [],
+    },
+  };
+}
+
+export default async function CampaignDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const campaign = await getCampaignBySlug(slug);
+
+  if (!campaign) {
+    notFound();
+  }
+
+  const imageUrl = campaign.profileImage
+    ? urlForImage(campaign.profileImage).width(800).height(800).url()
+    : '/images/placeholder-profile.jpg';
+
+  const statusColors = {
+    active: 'bg-secondary text-white',
+    funded: 'bg-primary text-white',
+    graduated: 'bg-accent text-white',
+  };
+
+  const statusLabels = {
+    active: 'Active Campaign',
+    funded: 'Fully Funded',
+    graduated: 'Successfully Graduated',
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        {/* Main Content */}
+        <div className="lg:col-span-2">
+          {/* Profile Section */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+            <div className="relative h-96 w-full">
+              <Image
+                src={imageUrl}
+                alt={`${campaign.firstName}'s campaign`}
+                fill
+                className="object-cover"
+                priority
+              />
+              <div
+                className={`absolute top-4 right-4 px-4 py-2 rounded-full text-sm font-semibold ${statusColors[campaign.status]}`}
+              >
+                {statusLabels[campaign.status]}
+              </div>
+            </div>
+
+            <div className="p-8">
+              <h1 className="text-4xl font-bold text-neutral-charcoal mb-2">
+                {campaign.firstName}, {campaign.age}
+              </h1>
+              <p className="text-lg text-neutral-gray mb-6">{campaign.agency}</p>
+
+              <ProgressBar
+                current={campaign.amountRaised}
+                goal={campaign.fundingGoal}
+                showLabels={true}
+              />
+            </div>
+          </div>
+
+          {/* Story */}
+          <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+            <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Their Story</h2>
+            <div className="prose prose-lg max-w-none text-neutral-charcoal whitespace-pre-line">
+              <Markdown>{campaign.story}</Markdown>
+            </div>
+          </div>
+
+          {/* Goals */}
+          <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+            <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Goals</h2>
+            <ul className="space-y-3">
+              {campaign.goals.map((goal, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-secondary text-xl mr-3">✓</span>
+                  <span className="text-lg text-neutral-charcoal">{goal}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Budget Breakdown */}
+          <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+            <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">
+              Budget Breakdown
+            </h2>
+            <div className="space-y-4">
+              {campaign.budgetBreakdown.map((item) => (
+                <div key={item._key} className="flex justify-between items-center border-b pb-3">
+                  <span className="text-neutral-charcoal">{item.item}</span>
+                  <span className="font-semibold text-neutral-charcoal">
+                    ${item.amount.toLocaleString()}
+                  </span>
+                </div>
+              ))}
+              <div className="flex justify-between items-center pt-2">
+                <span className="text-lg font-bold text-neutral-charcoal">Total Goal</span>
+                <span className="text-lg font-bold text-primary">
+                  ${campaign.fundingGoal.toLocaleString()}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Updates */}
+          {campaign.updates && campaign.updates.length > 0 && (
+            <div className="bg-white rounded-lg shadow-md p-8">
+              <h2 className="text-2xl font-bold text-neutral-charcoal mb-6">
+                Progress Updates
+              </h2>
+              <div className="space-y-6">
+                {campaign.updates.map((update) => (
+                  <div key={update._key} className="border-l-4 border-primary pl-6 py-2">
+                    <p className="text-sm text-neutral-gray mb-2">
+                      {new Date(update.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </p>
+                    <p className="text-neutral-charcoal whitespace-pre-line">{update.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Donation Sidebar */}
+        <div className="lg:col-span-1">
+          <DonationSidebar campaign={campaign} />
+        </div>
+      </div>
+    </div>
+  );
+}
