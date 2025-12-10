@@ -53,6 +53,36 @@ export default function PrivacyPage() {
         </section>
 
         <section className="mb-8">
+          <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Data Handling & Retention</h2>
+          <ul className="list-disc list-inside space-y-2">
+            <li>We only collect the minimum data needed to process donations and provide updates.</li>
+            <li>Payment card data never touches our servers; it is handled by Stripe.</li>
+            <li>Donation records (amount, session ID, campaign) are retained for reconciliation and audit.</li>
+            <li>Email addresses are stored to send receipts and campaign updates; you can opt out anytime.</li>
+          </ul>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Fees & Payment Processing</h2>
+          <p className="mb-3">
+            Stripe processes all payments. We do not add platform fees; standard Stripe fees apply per transaction.
+          </p>
+          <p className="text-sm text-neutral-gray">
+            PCI Scope: Path2Better is out of scope for card data because all cardholder data is tokenized and sent directly to Stripe.
+            We do not store or transmit card details.
+          </p>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Uptime, Monitoring, and Incidents</h2>
+          <ul className="list-disc list-inside space-y-2">
+            <li>We monitor availability and Stripe webhook processing to ensure donations are recorded.</li>
+            <li>Critical incidents (payment issues, data exposure) are investigated immediately and impacted users are notified within 24 hours.</li>
+            <li>For incident reports, contact <a href="mailto:security@path2better.com" className="text-primary hover:underline">security@path2better.com</a>.</li>
+          </ul>
+        </section>
+
+        <section className="mb-8">
           <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Third-Party Services</h2>
           <p className="mb-2">We use the following third-party services:</p>
           <ul className="list-disc list-inside space-y-2">

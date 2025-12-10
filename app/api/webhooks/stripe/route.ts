@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe/client';
 import { sendDonationConfirmation } from '@/lib/email/resend';
+import { recordDonation } from '@/lib/sanity/queries';
+import { logAudit } from '@/lib/audit';
 import Stripe from 'stripe';
 
 export async function POST(request: NextRequest) {
@@ -22,10 +24,11 @@ export async function POST(request: NextRequest) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
-  } catch (err: any) {
-    console.error('Webhook signature verification failed:', err.message);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('Webhook signature verification failed:', message);
     return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
+      { error: `Webhook Error: ${message}` },
       { status: 400 }
     );
   }
@@ -51,12 +54,27 @@ export async function POST(request: NextRequest) {
         });
 
         console.log(`Donation confirmation email sent to ${customerEmail}`);
-
-        // In the future, you could update the campaign's amountRaised in Sanity here
-        // For MVP, agencies will update this manually
       } catch (error) {
         console.error('Error sending confirmation email:', error);
         // Don't fail the webhook if email fails
+      }
+    }
+
+    if (campaignSlug && session.id && session.amount_total && session.payment_status === 'paid') {
+      try {
+        const result = await recordDonation({
+          sessionId: session.id,
+          amountCents: session.amount_total,
+          campaignSlug,
+          donationType,
+        });
+        logAudit(result.alreadyProcessed ? 'donation_skipped' : 'donation_recorded', {
+          sessionId: session.id,
+          campaignSlug,
+          amountCents: session.amount_total,
+        });
+      } catch (error) {
+        console.error('Error recording donation:', error);
       }
     }
   }

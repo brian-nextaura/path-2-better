@@ -1,9 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe/client';
+import { getCampaignForDonation } from '@/lib/sanity/queries';
 
 export async function POST(request: NextRequest) {
   try {
     const { amount, campaignSlug, campaignName, donationType } = await request.json();
+
+    const MIN_AMOUNT_CENTS = 100; // $1.00
+    const MAX_AMOUNT_CENTS = 5000000; // $50,000.00
+
+    if (!amount || typeof amount !== 'number' || Number.isNaN(amount)) {
+      return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
+    }
+
+    if (!campaignSlug || !campaignName) {
+      return NextResponse.json({ error: 'Missing campaign details' }, { status: 400 });
+    }
+
+    if (!['one-time', 'monthly'].includes(donationType)) {
+      return NextResponse.json({ error: 'Invalid donation type' }, { status: 400 });
+    }
+
+    const amountCents = Math.round(amount);
+
+    if (amountCents < MIN_AMOUNT_CENTS || amountCents > MAX_AMOUNT_CENTS) {
+      return NextResponse.json(
+        { error: `Amount must be between $${MIN_AMOUNT_CENTS / 100} and $${MAX_AMOUNT_CENTS / 100}` },
+        { status: 400 }
+      );
+    }
+
+    const campaign = await getCampaignForDonation(campaignSlug);
+    if (!campaign?._id) {
+      return NextResponse.json({ error: 'Campaign not found' }, { status: 404 });
+    }
+
+    if (campaign.status !== 'active') {
+      return NextResponse.json({ error: 'Campaign is not accepting donations' }, { status: 400 });
+    }
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
@@ -20,7 +54,7 @@ export async function POST(request: NextRequest) {
                 name: `Monthly Sponsorship for ${campaignName}`,
                 description: 'Monthly recurring donation',
               },
-              unit_amount: amount,
+              unit_amount: amountCents,
               recurring: {
                 interval: 'month',
               },
@@ -51,7 +85,7 @@ export async function POST(request: NextRequest) {
                 name: `Support ${campaignName}`,
                 description: 'One-time donation',
               },
-              unit_amount: amount,
+              unit_amount: amountCents,
             },
             quantity: 1,
           },
@@ -67,11 +101,9 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({ sessionId: session.id });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating checkout session:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    const message = error instanceof Error ? error.message : 'Unexpected error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

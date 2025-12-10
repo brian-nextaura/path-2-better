@@ -92,6 +92,51 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'housingStatus',
+      title: 'Housing Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Unstable', value: 'unstable' },
+          { title: 'In Progress', value: 'in-progress' },
+          { title: 'Stable', value: 'stable' },
+        ],
+      },
+      description: 'Agency-verified housing stability status for impact reporting',
+    }),
+    defineField({
+      name: 'employmentStatus',
+      title: 'Employment Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Unemployed', value: 'unemployed' },
+          { title: 'Training/Placement', value: 'training' },
+          { title: 'Employed', value: 'employed' },
+        ],
+      },
+      description: 'Agency-verified employment status for impact reporting',
+    }),
+    defineField({
+      name: 'graduationDate',
+      title: 'Graduation Date',
+      type: 'datetime',
+      description: 'Set when the pathway is considered completed/graduated',
+    }),
+    defineField({
+      name: 'verifiedBy',
+      title: 'Verified By',
+      type: 'string',
+      description: 'Agency staff member who verified the latest status/outcomes',
+    }),
+    defineField({
+      name: 'verificationNotes',
+      title: 'Verification Notes',
+      type: 'text',
+      rows: 3,
+      description: 'Short notes about verification, safeguards, or concerns',
+    }),
+    defineField({
       name: 'agency',
       title: 'Agency',
       type: 'string',

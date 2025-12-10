@@ -16,11 +16,25 @@ export interface Campaign {
   amountRaised: number;
   status: 'active' | 'funded' | 'graduated';
   agency: string;
+  housingStatus?: 'unstable' | 'in-progress' | 'stable';
+  employmentStatus?: 'unemployed' | 'training' | 'employed';
+  graduationDate?: string;
+  verifiedBy?: string;
+  verificationNotes?: string;
   updates: CampaignUpdate[];
   createdAt: string;
   slug: {
     current: string;
   };
+}
+
+export interface DonationEvent {
+  _id: string;
+  sessionId: string;
+  amountCents: number;
+  campaignSlug: string;
+  donationType?: string | null;
+  createdAt: string;
 }
 
 export interface BudgetItem {

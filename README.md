@@ -183,6 +183,8 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 - No credit card data stored on our servers
 - Environment variables for sensitive data
 - Simple password protection for admin (upgrade recommended for production)
+- Server-side admin auth with HTTP-only session cookies (set `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET`)
+- See `docs/SECURITY_AND_COMPLIANCE.md` for PCI scope, monitoring, and incident response notes
 
 For production deployments, consider implementing:
 - OAuth/SSO for admin access

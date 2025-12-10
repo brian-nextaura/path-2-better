@@ -116,6 +116,50 @@ export default async function CampaignDetailPage({
             </ul>
           </div>
 
+          {/* Outcomes & Verification */}
+          {(campaign.housingStatus || campaign.employmentStatus || campaign.graduationDate || campaign.verifiedBy) && (
+            <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+              <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Verified Outcomes</h2>
+              <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {campaign.housingStatus && (
+                  <div>
+                    <dt className="text-sm text-neutral-gray">Housing Stability</dt>
+                    <dd className="text-lg font-semibold text-neutral-charcoal capitalize">
+                      {campaign.housingStatus.replace('-', ' ')}
+                    </dd>
+                  </div>
+                )}
+                {campaign.employmentStatus && (
+                  <div>
+                    <dt className="text-sm text-neutral-gray">Employment</dt>
+                    <dd className="text-lg font-semibold text-neutral-charcoal capitalize">
+                      {campaign.employmentStatus}
+                    </dd>
+                  </div>
+                )}
+                {campaign.graduationDate && (
+                  <div>
+                    <dt className="text-sm text-neutral-gray">Graduation Date</dt>
+                    <dd className="text-lg font-semibold text-neutral-charcoal">
+                      {new Date(campaign.graduationDate).toLocaleDateString()}
+                    </dd>
+                  </div>
+                )}
+                {campaign.verifiedBy && (
+                  <div>
+                    <dt className="text-sm text-neutral-gray">Verified By</dt>
+                    <dd className="text-lg font-semibold text-neutral-charcoal">
+                      {campaign.verifiedBy}
+                    </dd>
+                    {campaign.verificationNotes && (
+                      <p className="text-sm text-neutral-gray mt-1">{campaign.verificationNotes}</p>
+                    )}
+                  </div>
+                )}
+              </dl>
+            </div>
+          )}
+
           {/* Budget Breakdown */}
           <div className="bg-white rounded-lg shadow-md p-8 mb-8">
             <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">

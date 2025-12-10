@@ -11,11 +11,17 @@ export default function AdminLoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if already authenticated
-    const isAuth = sessionStorage.getItem('admin_auth');
-    if (isAuth === 'true') {
-      router.push('/admin/dashboard');
-    }
+    const checkSession = async () => {
+      try {
+        const res = await fetch('/api/admin/session');
+        if (res.ok) {
+          router.push('/admin/dashboard');
+        }
+      } catch {
+        // ignore
+      }
+    };
+    checkSession();
   }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,11 +29,24 @@ export default function AdminLoginPage() {
     setIsLoading(true);
     setError('');
 
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD || password === 'path2better2025') {
-      sessionStorage.setItem('admin_auth', 'true');
+    try {
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        setError(data.error || 'Unable to log in');
+        setIsLoading(false);
+        return;
+      }
+
       router.push('/admin/dashboard');
-    } else {
-      setError('Incorrect password');
+    } catch (err) {
+      console.error('Login error', err);
+      setError('Unable to log in');
       setIsLoading(false);
     }
   };

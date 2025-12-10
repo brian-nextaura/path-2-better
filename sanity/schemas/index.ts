@@ -1,3 +1,4 @@
 import campaign from './campaign';
+import donationEvent from './donationEvent';
 
-export const schemas = [campaign];
+export const schemas = [campaign, donationEvent];
