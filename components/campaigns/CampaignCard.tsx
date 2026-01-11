@@ -1,9 +1,12 @@
-import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Campaign } from '@/lib/types';
 import { urlForImage } from '@/lib/sanity/client';
 import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Clock, Users, CheckCircle2 } from 'lucide-react';
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -12,60 +15,72 @@ interface CampaignCardProps {
 export function CampaignCard({ campaign }: CampaignCardProps) {
   const imageUrl = campaign.profileImage
     ? urlForImage(campaign.profileImage).width(400).height(400).url()
-    : '/images/placeholder-profile.jpg';
+    : '/images/Empty_sunny_apartment_49030cce.png';
 
-  const statusColors = {
-    active: 'bg-secondary text-white',
-    funded: 'bg-primary text-white',
-    graduated: 'bg-accent text-white',
-  };
-
-  const statusLabels = {
-    active: 'Active',
-    funded: 'Funded',
-    graduated: 'Graduated',
-  };
+  const percentComplete = Math.min(100, Math.round((campaign.amountRaised / campaign.fundingGoal) * 100));
+  const category = campaign.category || 'Housing';
+  const daysLeft = campaign.daysLeft || 30;
+  const supportersCount = campaign.supportersCount || 0;
 
   return (
     <Link href={`/campaigns/${campaign.slug.current}`}>
-      <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full flex flex-col">
-        <div className="relative h-64 w-full">
-          <Image
-            src={imageUrl}
-            alt={`${campaign.firstName}'s campaign`}
-            fill
-            className="object-cover"
-          />
-          <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-semibold ${statusColors[campaign.status]}`}>
-            {statusLabels[campaign.status]}
+      <a className="block h-full group">
+        <Card className="h-full flex flex-col overflow-hidden border-border/60 bg-card hover:border-primary/30 hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
+          <div className="relative h-48 overflow-hidden">
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10" />
+            <Image 
+              src={imageUrl}
+              alt={`${campaign.firstName}'s campaign`}
+              fill
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <Badge 
+              className="absolute top-3 left-3 z-20 bg-background/90 text-foreground hover:bg-background font-medium shadow-sm backdrop-blur-sm"
+            >
+              {category}
+            </Badge>
           </div>
-        </div>
-
-        <div className="p-6 flex-1 flex flex-col">
-          <div className="mb-4">
-            <h3 className="text-2xl font-bold text-neutral-charcoal mb-1">
+          
+          <CardHeader className="pb-3 pt-5 px-5">
+            <div className="flex items-center gap-2 text-xs text-primary font-semibold mb-2 uppercase tracking-wider">
+              <CheckCircle2 className="w-3 h-3" />
+              Verified by {campaign.agency}
+            </div>
+            <h3 className="text-xl font-serif font-bold leading-tight text-foreground group-hover:text-primary transition-colors">
               {campaign.firstName}, {campaign.age}
             </h3>
-            <p className="text-sm text-neutral-gray">{campaign.agency}</p>
-          </div>
+            <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+              {campaign.story.substring(0, 100)}...
+            </p>
+          </CardHeader>
 
-          <p className="text-neutral-charcoal mb-4 line-clamp-3 flex-1">
-            {campaign.story}
-          </p>
-
-          <div className="mb-4 space-y-2">
-            <Progress value={(campaign.amountRaised / campaign.fundingGoal) * 100} />
-            <div className="flex justify-between text-sm text-neutral-gray">
-              <span>${campaign.amountRaised.toLocaleString()}</span>
-              <span>${campaign.fundingGoal.toLocaleString()}</span>
+          <CardContent className="px-5 pb-3 flex-grow">
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm font-medium">
+                <span className="text-foreground">${campaign.amountRaised.toLocaleString()}</span>
+                <span className="text-muted-foreground">of ${campaign.fundingGoal.toLocaleString()}</span>
+              </div>
+              <Progress value={percentComplete} />
+              <div className="flex justify-between text-xs text-muted-foreground pt-2">
+                <div className="flex items-center gap-1">
+                  <Users className="w-3 h-3" />
+                  <span>{supportersCount} supporters</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  <span>{daysLeft} days left</span>
+                </div>
+              </div>
             </div>
-          </div>
+          </CardContent>
 
-          <div className="text-primary font-semibold hover:text-primary-dark">
-            Learn more →
+          <div className="px-5 pb-5 pt-0">
+            <Button className="w-full bg-muted/50 text-foreground hover:bg-primary hover:text-white transition-all font-medium">
+              View Campaign
+            </Button>
           </div>
-        </div>
-      </div>
+        </Card>
+      </a>
     </Link>
   );
 }
