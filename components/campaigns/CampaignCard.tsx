@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Campaign } from '@/lib/types';
 import { urlForImage } from '@/lib/sanity/client';
+import { generateCategoryPlaceholder } from '@/lib/placeholders';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +16,7 @@ interface CampaignCardProps {
 export function CampaignCard({ campaign }: CampaignCardProps) {
   const imageUrl = campaign.profileImage
     ? urlForImage(campaign.profileImage).width(400).height(400).url()
-    : '/images/Empty_sunny_apartment_49030cce.png';
+    : generateCategoryPlaceholder(campaign.category);
 
   const percentComplete = Math.min(100, Math.round((campaign.amountRaised / campaign.fundingGoal) * 100));
   const category = campaign.category || 'Housing';

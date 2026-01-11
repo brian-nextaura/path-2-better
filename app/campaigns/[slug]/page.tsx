@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { getCampaignBySlug } from '@/lib/sanity/queries';
 import { urlForImage } from '@/lib/sanity/client';
+import { generateCategoryPlaceholder } from '@/lib/placeholders';
 import { Progress } from '@/components/ui/progress';
 import { DonationSidebar } from '@/components/campaigns/DonationSidebar';
 import { SocialShareButtons } from '@/components/campaigns/SocialShareButtons';
@@ -46,7 +47,7 @@ export default async function CampaignDetailPage({
 
   const imageUrl = campaign.profileImage
     ? urlForImage(campaign.profileImage).width(800).height(800).url()
-    : '/images/placeholder-profile.jpg';
+    : generateCategoryPlaceholder(campaign.category);
 
   const statusColors = {
     active: 'bg-secondary text-white',
