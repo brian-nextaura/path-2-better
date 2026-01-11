@@ -144,6 +144,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'agencyId',
+      title: 'Agency Reference',
+      type: 'reference',
+      to: [{ type: 'agency' }],
+      description: 'Link to the agency organization',
+    }),
+    defineField({
       name: 'updates',
       title: 'Updates',
       type: 'array',

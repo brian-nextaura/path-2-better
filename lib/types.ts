@@ -16,6 +16,10 @@ export interface Campaign {
   amountRaised: number;
   status: 'active' | 'funded' | 'graduated';
   agency: string;
+  agencyId?: {
+    _ref: string;
+    _type: 'reference';
+  };
   housingStatus?: 'unstable' | 'in-progress' | 'stable';
   employmentStatus?: 'unemployed' | 'training' | 'employed';
   graduationDate?: string;
@@ -62,4 +66,57 @@ export interface DonationMetadata {
   campaignSlug: string;
   campaignName: string;
   donationType: 'one-time' | 'monthly';
+}
+
+export interface User {
+  _id: string;
+  _type: 'user';
+  email: string;
+  passwordHash?: string;
+  firstName: string;
+  lastName: string;
+  role: 'donor' | 'agency_admin' | 'platform_admin';
+  agencyId?: {
+    _ref: string;
+    _type: 'reference';
+  };
+  emailVerified: boolean;
+  emailPreferences: EmailPreferences;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EmailPreferences {
+  donationConfirmations: boolean;
+  campaignUpdates: boolean;
+  platformNews: boolean;
+  recurringReminders: boolean;
+}
+
+export interface Agency {
+  _id: string;
+  _type: 'agency';
+  name: string;
+  slug: {
+    current: string;
+  };
+  description?: string;
+  logo?: {
+    asset: {
+      _ref: string;
+      _type: 'reference';
+    };
+  };
+  website?: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  status: 'active' | 'pending' | 'inactive';
+  verificationDate?: string;
+  campaignCount: number;
+  totalRaised: number;
+  createdAt: string;
 }
