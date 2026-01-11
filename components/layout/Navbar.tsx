@@ -46,15 +46,19 @@ export function Navbar() {
         </div>
 
         {/* CTA & Mobile Menu */}
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" className="text-sm font-medium">
-              Sign In
-            </Button>
-            <Button className="font-medium shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all">
-              Start Helping
-            </Button>
-          </div>
+         <div className="flex items-center gap-4">
+           <div className="hidden md:flex items-center gap-4">
+             <Link href="/auth/login">
+               <Button variant="ghost" className="text-sm font-medium">
+                 Sign In
+               </Button>
+             </Link>
+             <Link href="/auth/signup">
+               <Button className="font-medium shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all">
+                 Start Helping
+               </Button>
+             </Link>
+           </div>
 
           {/* Mobile Menu Trigger */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -67,21 +71,25 @@ export function Navbar() {
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
               <nav className="flex flex-col gap-4 mt-8">
                 {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-lg font-medium py-2 border-b border-border/50 hover:text-primary transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-                <div className="flex flex-col gap-3 mt-4">
-                  <Button variant="outline" className="w-full justify-start">
-                    Sign In
-                  </Button>
-                  <Button className="w-full">Start Helping</Button>
-                </div>
+                   <Link
+                     key={link.href}
+                     href={link.href}
+                     className="text-lg font-medium py-2 border-b border-border/50 hover:text-primary transition-colors"
+                     onClick={() => setIsOpen(false)}
+                   >
+                     {link.name}
+                   </Link>
+                 ))}
+                 <div className="flex flex-col gap-3 mt-4">
+                   <Link href="/auth/login" onClick={() => setIsOpen(false)}>
+                     <Button variant="outline" className="w-full justify-start">
+                       Sign In
+                     </Button>
+                   </Link>
+                   <Link href="/auth/signup" onClick={() => setIsOpen(false)}>
+                     <Button className="w-full">Start Helping</Button>
+                   </Link>
+                 </div>
               </nav>
             </SheetContent>
           </Sheet>
