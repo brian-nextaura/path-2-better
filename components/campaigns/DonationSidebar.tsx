@@ -3,9 +3,6 @@
 import React, { useState } from 'react';
 import { Campaign } from '@/lib/types';
 import { Button } from '@/components/ui/Button';
-import { loadStripe } from '@stripe/stripe-js';
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 interface DonationSidebarProps {
   campaign: Campaign;
@@ -38,11 +35,10 @@ export function DonationSidebar({ campaign }: DonationSidebarProps) {
         }),
       });
 
-      const { sessionId } = await response.json();
-      const stripe = await stripePromise;
+      const { url } = await response.json();
 
-      if (stripe) {
-        await stripe.redirectToCheckout({ sessionId });
+      if (url) {
+        window.location.href = url;
       }
     } catch (error) {
       console.error('Error creating checkout session:', error);
