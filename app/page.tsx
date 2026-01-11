@@ -1,15 +1,20 @@
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Heart, LineChart } from 'lucide-react';
 import { getFeaturedCampaigns } from '@/lib/sanity/queries';
 import { CampaignCard } from '@/components/campaigns/CampaignCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Campaign } from '@/lib/types';
 
 export const revalidate = 60;
 
 export default async function Home() {
-  const featuredCampaigns = await getFeaturedCampaigns(3);
+  let featuredCampaigns: Campaign[] = [];
+  try {
+    featuredCampaigns = await getFeaturedCampaigns(3);
+  } catch (error) {
+    console.error('Error fetching featured campaigns:', error);
+  }
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-primary/20">
@@ -17,10 +22,10 @@ export default async function Home() {
       <section className="relative pt-16 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+            <div 
+              
+              
+              
               className="max-w-2xl"
             >
               <Badge className="mb-6 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20 px-4 py-1.5 text-sm rounded-full">
@@ -62,12 +67,12 @@ export default async function Home() {
                 </div>
                 <p>Joined by <span className="font-bold text-foreground">400+</span> local supporters</p>
               </div>
-            </motion.div>
+            </div>
             
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+            <div 
+              
+              
+              
               className="relative lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl shadow-primary/10"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
@@ -87,7 +92,7 @@ export default async function Home() {
                 </p>
                 <p className="mt-2 text-white/80 font-serif italic">— David, moved into housing Oct 2024</p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
