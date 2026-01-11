@@ -1,10 +1,25 @@
 import Stripe from 'stripe';
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY is not set');
-}
+const getSecretKey = (): string => {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    throw new Error('STRIPE_SECRET_KEY environment variable is not set');
+  }
+  return key;
+};
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-11-20.acacia',
-  typescript: true,
-});
+// Create a lazy-loaded stripe instance to avoid build-time errors
+let stripeInstance: Stripe | null = null;
+
+const getStripe = (): Stripe => {
+  if (!stripeInstance) {
+    stripeInstance = new Stripe(getSecretKey(), {
+      apiVersion: '2025-10-29.clover',
+      typescript: true,
+    });
+  }
+  return stripeInstance;
+};
+
+export { getStripe };
+export const stripe = getStripe();
