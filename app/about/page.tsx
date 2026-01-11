@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export const metadata = {
@@ -144,7 +144,7 @@ export default function AboutPage() {
             Browse active campaigns and support your neighbours on their path to better.
           </p>
           <Link href="/campaigns">
-            <Button variant="accent" size="lg">
+            <Button variant="secondary" size="lg">
               Browse Campaigns
             </Button>
           </Link>

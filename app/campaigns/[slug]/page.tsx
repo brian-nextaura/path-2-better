@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { getCampaignBySlug } from '@/lib/sanity/queries';
 import { urlForImage } from '@/lib/sanity/client';
-import { ProgressBar } from '@/components/ui/ProgressBar';
+import { Progress } from '@/components/ui/progress';
 import { DonationSidebar } from '@/components/campaigns/DonationSidebar';
 import Markdown from 'react-markdown';
 
@@ -87,11 +87,13 @@ export default async function CampaignDetailPage({
               </h1>
               <p className="text-lg text-neutral-gray mb-6">{campaign.agency}</p>
 
-              <ProgressBar
-                current={campaign.amountRaised}
-                goal={campaign.fundingGoal}
-                showLabels={true}
-              />
+              <div className="space-y-2">
+                <Progress value={(campaign.amountRaised / campaign.fundingGoal) * 100} />
+                <div className="flex justify-between text-sm text-neutral-gray">
+                  <span>${campaign.amountRaised.toLocaleString()} raised</span>
+                  <span>${campaign.fundingGoal.toLocaleString()} goal</span>
+                </div>
+              </div>
             </div>
           </div>
 

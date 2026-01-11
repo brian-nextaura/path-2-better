@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export const metadata = {
   title: 'Thank You - Path2Better',
@@ -55,7 +55,7 @@ export default function SuccessPage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/campaigns">
-              <Button variant="primary" size="lg">
+              <Button variant="default" size="lg">
                 Browse More Campaigns
               </Button>
             </Link>

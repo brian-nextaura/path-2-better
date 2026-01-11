@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
         },
       });
 
-      return NextResponse.json({ sessionId: session.id });
+      return NextResponse.json({ sessionId: session.id, url: session.url });
     } else {
       // Create a one-time payment checkout session
       const session = await stripe.checkout.sessions.create({
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
         },
       });
 
-      return NextResponse.json({ sessionId: session.id });
+      return NextResponse.json({ sessionId: session.id, url: session.url });
     }
   } catch (error: unknown) {
     console.error('Error creating checkout session:', error);

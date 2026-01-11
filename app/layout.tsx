@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from 'next/font/google';
+import { Inter, DM_Serif_Display } from 'next/font/google';
 import "./globals.css";
-import { Header } from '@/components/layout/Header';
+import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const dmSerif = DM_Serif_Display({ 
+  weight: ['400'],
+  subsets: ['latin'], 
+  variable: '--font-serif' 
+});
 
 export const metadata: Metadata = {
   title: "Path2Better - Community-powered pathways forward",
@@ -23,9 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} antialiased bg-gray-50`}>
-        <Header />
+    <html lang="en" className={`${inter.variable} ${dmSerif.variable}`}>
+      <body className="font-sans antialiased bg-background text-foreground">
+        <Navbar />
         <main className="min-h-screen">
           {children}
         </main>

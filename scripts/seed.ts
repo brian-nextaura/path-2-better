@@ -41,6 +41,9 @@ const campaigns = [
     agency: 'YES Shelter for Youth and Families',
     housingStatus: 'in-progress',
     employmentStatus: 'training',
+    category: 'Housing',
+    daysLeft: 28,
+    supportersCount: 42,
     updates: [
       {
         date: new Date('2026-01-05').toISOString(),
@@ -72,6 +75,9 @@ const campaigns = [
     agency: 'Brock Mission',
     housingStatus: 'in-progress',
     employmentStatus: 'employed',
+    category: 'Housing',
+    daysLeft: 35,
+    supportersCount: 38,
     updates: [
       {
         date: new Date('2026-01-08').toISOString(),
@@ -94,6 +100,9 @@ const campaigns = [
     agency: 'Fourcast',
     housingStatus: 'unstable',
     employmentStatus: 'training',
+    category: 'Employment',
+    daysLeft: 42,
+    supportersCount: 25,
     updates: [],
   },
   {
@@ -112,6 +121,9 @@ const campaigns = [
     agency: 'Peterborough Housing',
     housingStatus: 'in-progress',
     employmentStatus: 'employed',
+    category: 'Housing',
+    daysLeft: 31,
+    supportersCount: 51,
     updates: [
       {
         date: new Date('2026-01-10').toISOString(),
@@ -135,6 +147,9 @@ const campaigns = [
     agency: 'YES Shelter for Youth and Families',
     housingStatus: 'unstable',
     employmentStatus: 'training',
+    category: 'Employment',
+    daysLeft: 21,
+    supportersCount: 33,
     updates: [
       {
         date: new Date('2026-01-09').toISOString(),
@@ -176,6 +191,9 @@ async function seed() {
         agency: campaign.agency,
         housingStatus: campaign.housingStatus,
         employmentStatus: campaign.employmentStatus,
+        category: campaign.category,
+        daysLeft: campaign.daysLeft,
+        supportersCount: campaign.supportersCount,
         updates: campaign.updates.map((update, i) => ({
           _key: `update-${i}`,
           date: update.date,

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getFeaturedCampaigns } from '@/lib/sanity/queries';
 import { CampaignCard } from '@/components/campaigns/CampaignCard';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
@@ -26,7 +26,7 @@ export default async function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/campaigns">
-                <Button size="lg" variant="accent">
+                <Button size="lg" variant="secondary">
                   Browse All Campaigns
                 </Button>
               </Link>
@@ -139,7 +139,7 @@ export default async function Home() {
             Browse active campaigns and support your neighbours on their path to better.
           </p>
           <Link href="/campaigns">
-            <Button size="lg" variant="accent">
+            <Button size="lg" variant="secondary">
               Browse All Campaigns
             </Button>
           </Link>

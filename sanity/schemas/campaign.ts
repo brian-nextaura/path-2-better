@@ -183,6 +183,46 @@ export default defineType({
       type: 'datetime',
       initialValue: () => new Date().toISOString(),
     }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Housing', value: 'Housing' },
+          { title: 'Education', value: 'Education' },
+          { title: 'Medical', value: 'Medical' },
+          { title: 'Employment', value: 'Employment' },
+          { title: 'Basic Needs', value: 'Basic Needs' },
+        ],
+      },
+      description: 'Primary category for this campaign',
+    }),
+    defineField({
+      name: 'daysLeft',
+      title: 'Days Left',
+      type: 'number',
+      initialValue: 30,
+      validation: (Rule) => Rule.required().min(0),
+      description: 'Number of days remaining for this campaign',
+    }),
+    defineField({
+      name: 'supportersCount',
+      title: 'Supporters Count',
+      type: 'number',
+      initialValue: 0,
+      validation: (Rule) => Rule.required().min(0),
+      description: 'Number of people who have donated to this campaign',
+    }),
+    defineField({
+      name: 'coverImage',
+      title: 'Cover Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      description: 'Campaign card cover image',
+    }),
   ],
   preview: {
     select: {

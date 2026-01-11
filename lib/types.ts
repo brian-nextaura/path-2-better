@@ -26,6 +26,15 @@ export interface Campaign {
   slug: {
     current: string;
   };
+  category?: 'Housing' | 'Education' | 'Medical' | 'Employment' | 'Basic Needs';
+  daysLeft?: number;
+  supportersCount?: number;
+  coverImage?: {
+    asset: {
+      _ref: string;
+      _type: 'reference';
+    };
+  };
 }
 
 export interface DonationEvent {

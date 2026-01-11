@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Campaign } from '@/lib/types';
 import { urlForImage } from '@/lib/sanity/client';
-import { ProgressBar } from '@/components/ui/ProgressBar';
+import { Progress } from '@/components/ui/progress';
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -53,11 +53,12 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
             {campaign.story}
           </p>
 
-          <div className="mb-4">
-            <ProgressBar
-              current={campaign.amountRaised}
-              goal={campaign.fundingGoal}
-            />
+          <div className="mb-4 space-y-2">
+            <Progress value={(campaign.amountRaised / campaign.fundingGoal) * 100} />
+            <div className="flex justify-between text-sm text-neutral-gray">
+              <span>${campaign.amountRaised.toLocaleString()}</span>
+              <span>${campaign.fundingGoal.toLocaleString()}</span>
+            </div>
           </div>
 
           <div className="text-primary font-semibold hover:text-primary-dark">

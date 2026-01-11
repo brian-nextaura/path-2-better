@@ -24,7 +24,11 @@ export async function getAllCampaigns(status?: 'active' | 'funded' | 'graduated'
     verificationNotes,
     updates,
     createdAt,
-    slug
+    slug,
+    category,
+    daysLeft,
+    supportersCount,
+    coverImage
   }`;
 
   return client.fetch(query);
@@ -51,7 +55,11 @@ export async function getCampaignBySlug(slug: string): Promise<Campaign | null> 
     verificationNotes,
     updates,
     createdAt,
-    slug
+    slug,
+    category,
+    daysLeft,
+    supportersCount,
+    coverImage
   }`;
 
   return client.fetch(query, { slug });
@@ -78,7 +86,11 @@ export async function getFeaturedCampaigns(limit: number = 3): Promise<Campaign[
     verificationNotes,
     updates,
     createdAt,
-    slug
+    slug,
+    category,
+    daysLeft,
+    supportersCount,
+    coverImage
   }`;
 
   return client.fetch(query);
