@@ -54,8 +54,8 @@ const decodeBase64 = (value: string) => {
   return new Uint8Array(Buffer.from(value, 'base64'));
 };
 
-const toBase64Url = (buffer: ArrayBuffer) =>
-  encodeBase64(new Uint8Array(buffer)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const toBase64Url = (buffer: ArrayBuffer | Uint8Array): string =>
+  encodeBase64(buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
 const fromBase64Url = (value: string) =>
   decodeBase64(value.replace(/-/g, '+').replace(/_/g, '/'));
@@ -63,7 +63,7 @@ const fromBase64Url = (value: string) =>
 const sign = async (payload: SessionPayload) => {
   const body = toBase64Url(encoder.encode(JSON.stringify(payload)));
   const key = await getKey();
-  const signatureBuffer = await crypto.subtle.sign('HMAC', key, encoder.encode(body));
+  const signatureBuffer = await crypto.subtle.sign('HMAC', key, encoder.encode(body)) as ArrayBuffer;
   const signature = toBase64Url(signatureBuffer);
   return `${body}.${signature}`;
 };
