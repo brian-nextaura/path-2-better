@@ -32,7 +32,7 @@ export default function PreferencesPage() {
 
         const authData = await authRes.json();
         setUser(authData.user);
-        setPreferences(authData.user.emailPreferences || preferences);
+        setPreferences(authData.user.emailPreferences);
       } catch (error) {
         console.error('Error fetching data:', error);
         router.push('/auth/login');

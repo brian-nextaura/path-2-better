@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { CampaignCard } from '@/components/campaigns/CampaignCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, ArrowUpDown } from 'lucide-react';
 import { Campaign } from '@/lib/types';
 
 const CATEGORIES = [
@@ -23,9 +23,10 @@ interface CampaignsBrowserProps {
 export default function CampaignsBrowser({ campaigns }: CampaignsBrowserProps) {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'newest' | 'funding' | 'supporters' | 'daysLeft'>('newest');
 
-  const filteredCampaigns = useMemo(() => {
-    return campaigns.filter((campaign) => {
+  const filteredAndSorted = useMemo(() => {
+    const filtered = campaigns.filter((campaign) => {
       const matchesCategory = activeCategory === 'All' || campaign.category === activeCategory;
       const matchesSearch = 
         campaign.firstName.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -33,7 +34,24 @@ export default function CampaignsBrowser({ campaigns }: CampaignsBrowserProps) {
         campaign.agency.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [campaigns, activeCategory, searchQuery]);
+
+    // Sort
+    const sorted = [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case 'funding':
+          return (b.amountRaised / b.fundingGoal) - (a.amountRaised / a.fundingGoal);
+        case 'supporters':
+          return (b.supportersCount || 0) - (a.supportersCount || 0);
+        case 'daysLeft':
+          return (a.daysLeft || 0) - (b.daysLeft || 0);
+        case 'newest':
+        default:
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
+    });
+
+    return sorted;
+  }, [campaigns, activeCategory, searchQuery, sortBy]);
 
   return (
     <div className="min-h-screen bg-background font-sans">
@@ -96,33 +114,61 @@ export default function CampaignsBrowser({ campaigns }: CampaignsBrowserProps) {
         </div>
       </div>
 
-      {/* Grid */}
-      <section className="py-12">
-        <div className="container mx-auto px-4 md:px-6">
-          {filteredCampaigns.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredCampaigns.map((campaign) => (
-                <CampaignCard key={campaign._id} campaign={campaign} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-24">
-              <div className="bg-muted/30 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Search className="w-8 h-8 text-muted-foreground" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">No campaigns found</h3>
-              <p className="text-muted-foreground">Try adjusting your search or filters.</p>
-              <Button 
-                variant="link" 
-                onClick={() => {setActiveCategory('All'); setSearchQuery('');}}
-                className="mt-4 text-primary"
-              >
-                Clear all filters
-              </Button>
-            </div>
-          )}
-        </div>
-      </section>
+       {/* Sorting Bar */}
+       <div className="bg-muted/20 border-b border-border/50">
+         <div className="container mx-auto px-4 md:px-6 py-4">
+           <div className="flex items-center gap-2">
+             <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+             <span className="text-sm font-medium text-muted-foreground">Sort by:</span>
+             <div className="flex gap-2">
+               {[
+                 { label: 'Newest', value: 'newest' as const },
+                 { label: 'Funding %', value: 'funding' as const },
+                 { label: 'Supporters', value: 'supporters' as const },
+                 { label: 'Days Left', value: 'daysLeft' as const },
+               ].map((option) => (
+                 <Button
+                   key={option.value}
+                   variant={sortBy === option.value ? 'default' : 'ghost'}
+                   size="sm"
+                   onClick={() => setSortBy(option.value)}
+                   className="text-xs"
+                 >
+                   {option.label}
+                 </Button>
+               ))}
+             </div>
+           </div>
+         </div>
+       </div>
+
+       {/* Grid */}
+       <section className="py-12">
+         <div className="container mx-auto px-4 md:px-6">
+           {filteredAndSorted.length > 0 ? (
+             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+               {filteredAndSorted.map((campaign) => (
+                 <CampaignCard key={campaign._id} campaign={campaign} />
+               ))}
+             </div>
+           ) : (
+             <div className="text-center py-24">
+               <div className="bg-muted/30 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                 <Search className="w-8 h-8 text-muted-foreground" />
+               </div>
+               <h3 className="text-xl font-bold mb-2">No campaigns found</h3>
+               <p className="text-muted-foreground">Try adjusting your search or filters.</p>
+               <Button 
+                 variant="link" 
+                 onClick={() => {setActiveCategory('All'); setSearchQuery(''); setSortBy('newest');}}
+                 className="mt-4 text-primary"
+               >
+                 Clear all filters
+               </Button>
+             </div>
+           )}
+         </div>
+       </section>
     </div>
   );
 }

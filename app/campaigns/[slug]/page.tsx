@@ -4,6 +4,7 @@ import { getCampaignBySlug } from '@/lib/sanity/queries';
 import { urlForImage } from '@/lib/sanity/client';
 import { Progress } from '@/components/ui/progress';
 import { DonationSidebar } from '@/components/campaigns/DonationSidebar';
+import { SocialShareButtons } from '@/components/campaigns/SocialShareButtons';
 import Markdown from 'react-markdown';
 
 export const revalidate = 60;
@@ -97,13 +98,19 @@ export default async function CampaignDetailPage({
             </div>
           </div>
 
-          {/* Story */}
-          <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-            <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Their Story</h2>
-            <div className="prose prose-lg max-w-none text-neutral-charcoal whitespace-pre-line">
-              <Markdown>{campaign.story}</Markdown>
-            </div>
-          </div>
+           {/* Story */}
+           <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+             <div className="flex justify-between items-start mb-6">
+               <h2 className="text-2xl font-bold text-neutral-charcoal">Their Story</h2>
+               <SocialShareButtons 
+                 campaign={campaign}
+                 url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://path2better.com'}/campaigns/${campaign.slug.current}`}
+               />
+             </div>
+             <div className="prose prose-lg max-w-none text-neutral-charcoal whitespace-pre-line">
+               <Markdown>{campaign.story}</Markdown>
+             </div>
+           </div>
 
           {/* Goals */}
           <div className="bg-white rounded-lg shadow-md p-8 mb-8">
