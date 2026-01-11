@@ -31,10 +31,10 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Donations</h2>
           <h3 className="text-xl font-semibold text-neutral-charcoal mb-2">Payment Processing</h3>
-          <p className="mb-4">
-            All donations are processed securely through Stripe. By making a donation, you agree to
-            Stripe's terms of service.
-          </p>
+           <p className="mb-4">
+             All donations are processed securely through Stripe. By making a donation, you agree to
+             Stripe&rsquo;s terms of service.
+           </p>
 
           <h3 className="text-xl font-semibold text-neutral-charcoal mb-2">Donation Policy</h3>
           <ul className="list-disc list-inside space-y-2">
@@ -67,10 +67,10 @@ export default function TermsPage() {
 
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Disclaimer</h2>
-          <p>
-            Path2Better is provided "as is" without warranties of any kind. We do not guarantee
-            that campaigns will achieve their goals or that participants will meet stated objectives.
-          </p>
+           <p>
+             Path2Better is provided &ldquo;as is&rdquo; without warranties of any kind. We do not guarantee
+             that campaigns will achieve their goals or that participants will meet stated objectives.
+           </p>
         </section>
 
         <section className="mb-8">

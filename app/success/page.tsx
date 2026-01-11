@@ -38,10 +38,10 @@ export default function SuccessPage() {
           <div className="bg-blue-50 border-l-4 border-primary p-6 mb-8 text-left">
             <h2 className="font-semibold text-neutral-charcoal mb-2">What happens next?</h2>
             <ul className="space-y-2 text-neutral-gray">
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>You'll receive an email confirmation shortly</span>
-              </li>
+               <li className="flex items-start">
+                 <span className="text-primary mr-2">•</span>
+                 <span>You&rsquo;ll receive an email confirmation shortly</span>
+               </li>
               <li className="flex items-start">
                 <span className="text-primary mr-2">•</span>
                 <span>Your contribution will be applied to the campaign you selected</span>

@@ -21,11 +21,11 @@ export default function AboutPage() {
             transparent, agency-verified support pathways. We believe everyone deserves a path
             to stable housing and meaningful employment.
           </p>
-          <p className="text-neutral-gray leading-relaxed">
-            Unlike traditional crowdfunding, every campaign on Path2Better is created and verified
-            by trusted local agencies who provide ongoing casework support. This ensures donations
-            go exactly where they're needed and donors can track real progress.
-          </p>
+           <p className="text-neutral-gray leading-relaxed">
+             Unlike traditional crowdfunding, every campaign on Path2Better is created and verified
+             by trusted local agencies who provide ongoing casework support. This ensures donations
+             go exactly where they&rsquo;re needed and donors can track real progress.
+           </p>
         </section>
 
         <section className="mb-12">
@@ -100,20 +100,20 @@ export default function AboutPage() {
               <h3 className="text-lg font-semibold text-neutral-charcoal mb-2">
                 How are campaigns verified?
               </h3>
-              <p className="text-neutral-gray">
-                Every campaign is created by a partnered social service agency. The agency verifies
-                the person's situation, sets realistic goals, and provides ongoing casework support.
-              </p>
+               <p className="text-neutral-gray">
+                 Every campaign is created by a partnered social service agency. The agency verifies
+                 the person&rsquo;s situation, sets realistic goals, and provides ongoing casework support.
+               </p>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold text-neutral-charcoal mb-2">
                 Where does my donation go?
               </h3>
-              <p className="text-neutral-gray">
-                100% of donations go toward the specific goals outlined in the campaign budget.
-                Funds are managed by the partner agency to ensure they're used as intended.
-              </p>
+               <p className="text-neutral-gray">
+                 100% of donations go toward the specific goals outlined in the campaign budget.
+                 Funds are managed by the partner agency to ensure they&rsquo;re used as intended.
+               </p>
             </div>
 
             <div>
@@ -129,11 +129,11 @@ export default function AboutPage() {
               <h3 className="text-lg font-semibold text-neutral-charcoal mb-2">
                 Is Path2Better available in other cities?
               </h3>
-              <p className="text-neutral-gray">
-                Path2Better is currently serving Peterborough, Ontario. However, we're open source!
-                Other communities can fork the platform and deploy their own instances. Learn more
-                in our GitHub repository.
-              </p>
+               <p className="text-neutral-gray">
+                 Path2Better is currently serving Peterborough, Ontario. However, we&rsquo;re open source!
+                 Other communities can fork the platform and deploy their own instances. Learn more
+                 in our GitHub repository.
+               </p>
             </div>
           </div>
         </section>

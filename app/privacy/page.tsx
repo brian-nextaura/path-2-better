@@ -13,10 +13,10 @@ export default function PrivacyPage() {
 
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">Introduction</h2>
-          <p>
-            Path2Better ("we", "our", or "us") is committed to protecting your privacy. This Privacy
-            Policy explains how we collect, use, and safeguard your information when you use our platform.
-          </p>
+           <p>
+             Path2Better (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;) is committed to protecting your privacy. This Privacy
+             Policy explains how we collect, use, and safeguard your information when you use our platform.
+           </p>
         </section>
 
         <section className="mb-8">
@@ -28,20 +28,20 @@ export default function PrivacyPage() {
           </p>
 
           <h3 className="text-xl font-semibold text-neutral-charcoal mb-2">Email Address</h3>
-          <p>
-            We collect your email address to send donation confirmations and updates about campaigns
-            you've supported.
-          </p>
+           <p>
+             We collect your email address to send donation confirmations and updates about campaigns
+             you&rsquo;ve supported.
+           </p>
         </section>
 
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-neutral-charcoal mb-4">How We Use Your Information</h2>
-          <ul className="list-disc list-inside space-y-2">
-            <li>Process donations and send confirmation emails</li>
-            <li>Provide updates on campaigns you've supported</li>
-            <li>Improve our platform and user experience</li>
-            <li>Comply with legal obligations</li>
-          </ul>
+           <ul className="list-disc list-inside space-y-2">
+             <li>Process donations and send confirmation emails</li>
+             <li>Provide updates on campaigns you&rsquo;ve supported</li>
+             <li>Improve our platform and user experience</li>
+             <li>Comply with legal obligations</li>
+           </ul>
         </section>
 
         <section className="mb-8">
