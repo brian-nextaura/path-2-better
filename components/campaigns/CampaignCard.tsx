@@ -16,7 +16,7 @@ interface CampaignCardProps {
 export function CampaignCard({ campaign }: CampaignCardProps) {
   const imageUrl = campaign.profileImage
     ? urlForImage(campaign.profileImage).width(400).height(400).url()
-    : generateCategoryPlaceholder(campaign.category);
+    : generateCategoryPlaceholder(campaign.category, campaign.firstName);
 
   const percentComplete = Math.min(100, Math.round((campaign.amountRaised / campaign.fundingGoal) * 100));
   const category = campaign.category || 'Housing';

@@ -1,32 +1,33 @@
 /**
  * Generate placeholder images from local headshots
  * Uses actual professional headshots stored in public/placeholders
+ * Deterministically selects image based on campaign name for consistency
  */
 
-export function generateCategoryPlaceholder(category?: string): string {
-  // Map categories to specific headshot images
-  // Using a seeded approach so same category always gets same image variation
-  const categoryImageMap: Record<string, number> = {
-    Housing: 1,
-    Education: 3,
-    Medical: 5,
-    Employment: 7,
-    'Basic Needs': 9,
-  };
-
-  const imageIndex = categoryImageMap[category || 'Basic Needs'] || 9;
+export function generateCategoryPlaceholder(category?: string, campaignName?: string): string {
+  // Generate a seed from campaign name to ensure same campaign always gets same image
+  // But different campaigns get different images
+  let seed = 0;
   
-  // We have 16 headshots, cycle through them
-  const imageNumber = imageIndex % 16;
+  if (campaignName) {
+    // Create a simple hash from the campaign name
+    for (let i = 0; i < campaignName.length; i++) {
+      seed += campaignName.charCodeAt(i);
+    }
+  } else {
+    // Fallback: use category as seed
+    const categoryMap: Record<string, number> = {
+      Housing: 100,
+      Education: 200,
+      Medical: 300,
+      Employment: 400,
+      'Basic Needs': 500,
+    };
+    seed = categoryMap[category || 'Basic Needs'] || 500;
+  }
+  
+  // We have 16 headshots (0-15)
+  const imageNumber = Math.abs(seed) % 16;
   
   return `/placeholders/headshot-${imageNumber}.jpg`;
-}
-
-/**
- * Get a random headshot for variety
- * Call this if you want different images on reload
- */
-export function getRandomHeadshot(): string {
-  const randomIndex = Math.floor(Math.random() * 16);
-  return `/placeholders/headshot-${randomIndex}.jpg`;
 }

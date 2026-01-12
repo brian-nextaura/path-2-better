@@ -47,7 +47,7 @@ export default async function CampaignDetailPage({
 
   const imageUrl = campaign.profileImage
     ? urlForImage(campaign.profileImage).width(800).height(800).url()
-    : generateCategoryPlaceholder(campaign.category);
+    : generateCategoryPlaceholder(campaign.category, campaign.firstName);
 
   const statusColors = {
     active: 'bg-secondary text-white',
