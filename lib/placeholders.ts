@@ -1,98 +1,62 @@
 /**
- * Generate professional placeholder images using Picsum Photos
- * Reliable image service that works consistently
+ * Generate professional placeholder images as SVG data URIs
+ * Self-contained, no external API calls or dependencies
+ * Works reliably across all environments
  */
 
 export function generateCategoryPlaceholder(category?: string): string {
-  // Picsum Photos - reliable, consistent image delivery
-  // Format: https://picsum.photos/{width}/{height}?random={seed}
-  // Using different seeds for each category to ensure variety
-  
-  const categorySeeds: Record<string, number> = {
-    Housing: 10,      // Architecture/building images
-    Education: 20,    // People/education themed
-    Medical: 30,      // Healthcare themed
-    Employment: 40,   // Work/office themed
-    'Basic Needs': 50, // Shopping/food themed
-  };
-
-  const seed = categorySeeds[category || 'Basic Needs'] || 50;
-  
-  return `https://picsum.photos/600/400?random=${seed}`;
-}
-
-/**
- * Alternative: Generate solid color placeholder with category icon
- * Fallback if Picsum is unavailable
- */
-export function generateFallbackPlaceholder(category?: string): string {
-  const categoryColors: Record<string, { bg: string; icon: string }> = {
+  const categoryStyles: Record<string, { bg: string; gradient: string; icon: string; text: string }> = {
     Housing: {
       bg: '#1e40af',
+      gradient: '#1e40af,#1e3a8a',
       icon: '🏠',
+      text: 'Housing Support',
     },
     Education: {
       bg: '#7c3aed',
+      gradient: '#7c3aed,#6d28d9',
       icon: '📚',
+      text: 'Education Fund',
     },
     Medical: {
       bg: '#dc2626',
+      gradient: '#dc2626,#991b1b',
       icon: '⚕️',
+      text: 'Medical Aid',
     },
     Employment: {
       bg: '#059669',
+      gradient: '#059669,#047857',
       icon: '💼',
+      text: 'Job Training',
     },
     'Basic Needs': {
       bg: '#ea580c',
+      gradient: '#ea580c,#b45309',
       icon: '🛒',
+      text: 'Basic Needs',
     },
   };
 
-  const colors = categoryColors[category || 'Basic Needs'] || categoryColors['Basic Needs'];
+  const style = categoryStyles[category || 'Basic Needs'] || categoryStyles['Basic Needs'];
+  const colors = style.gradient.split(',');
 
-  // Create an SVG with the category color as background
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
-      <!-- Background -->
-      <rect width="600" height="400" fill="${colors.bg}"/>
-      
-      <!-- Gradient overlay for depth -->
-      <defs>
-        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:${colors.bg};stop-opacity:1" />
-          <stop offset="100%" style="stop-color:${adjustBrightness(colors.bg, -30)};stop-opacity:1" />
-        </linearGradient>
-      </defs>
-      <rect width="600" height="400" fill="url(#grad)"/>
-      
-      <!-- Centered icon -->
-      <text 
-        x="300" 
-        y="200" 
-        font-size="120" 
-        text-anchor="middle" 
-        dominant-baseline="central"
-        font-family="Arial, sans-serif"
-      >
-        ${colors.icon}
-      </text>
-    </svg>
-  `;
+  // Create a professional SVG placeholder with gradient
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+    <defs>
+      <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:${colors[0]};stop-opacity:1" />
+        <stop offset="100%" style="stop-color:${colors[1]};stop-opacity:1" />
+      </linearGradient>
+      <filter id="shadow">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+      </filter>
+    </defs>
+    <rect width="600" height="400" fill="url(#grad)"/>
+    <circle cx="300" cy="180" r="80" fill="rgba(255,255,255,0.1)"/>
+    <text x="300" y="190" font-size="100" text-anchor="middle" fill="white" font-family="Arial,sans-serif" font-weight="bold" dominant-baseline="central">${style.icon}</text>
+    <text x="300" y="320" font-size="24" text-anchor="middle" fill="white" font-family="Arial,sans-serif" font-weight="500" dominant-baseline="central" opacity="0.9">${style.text}</text>
+  </svg>`;
 
-  // Convert to data URI
-  const encodedSvg = encodeURIComponent(svg.trim());
-  return `data:image/svg+xml,${encodedSvg}`;
-}
-
-/**
- * Adjust brightness of a hex color
- */
-function adjustBrightness(hex: string, percent: number): string {
-  const num = parseInt(hex.replace('#', ''), 16);
-  const amt = Math.round(2.55 * percent);
-  const R = Math.min(255, Math.max(0, (num >> 16) + amt));
-  const G = Math.min(255, Math.max(0, (num >> 8 & 0x00FF) + amt));
-  const B = Math.min(255, Math.max(0, (num & 0x0000FF) + amt));
-  return '#' + (0x1000000 + (R << 16) + (G << 8) + B).toString(16).slice(1);
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
