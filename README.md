@@ -345,18 +345,6 @@ See [LICENSE](LICENSE) for full terms.
 
 ---
 
-## Acknowledgments
-
-Path2Better was built in partnership with:
-
-- **YES Shelter for Youth and Families** - Youth housing expertise
-- **Brock Mission** - Homelessness support and services
-- **Fourcast** - Data and impact measurement
-- **Peterborough Housing Corporation** - Housing solutions
-- **Local volunteers and advocates** - Community feedback and testing
-
----
-
 ## Roadmap
 
 **In Progress**
